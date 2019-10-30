@@ -9,6 +9,8 @@ if (!document.querySelector('#app')) {
   document.body.insertBefore(appEl, scriptEl)
 }
 
+console.log('toast 1.1')
+
 const app =  new Vue({
     el: '#app',
     render: (h) => h(App),
