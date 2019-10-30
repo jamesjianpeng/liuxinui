@@ -3,16 +3,11 @@
     <button @click="add">
       add Toast
     </button>
-    <div class="em">
-      <div class="em-one">
-        em
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import Toast from './toast'
+import Toast from '../components/toast'
 
 export default {
   name: 'App',

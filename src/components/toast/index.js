@@ -14,7 +14,7 @@ const ToastVm = {
     $vm = new Toast({
       el,
       propsData: {
-        text: propsData.text,
+        ...propsData,
         num: toastList.length
       }
     })
@@ -30,13 +30,13 @@ const ToastVm = {
     const removeEl = () => {
       isFirst = false
       toastTimeId = setTimeout(() => {
+        moveEl()
         const shiftEl = toastList.shift()
         let pa = null
         if (shiftEl) pa = shiftEl.parentNode
         if(pa) pa.removeChild(shiftEl)
         clearTimeout(toastTimeId)
         isFirst = true
-        moveEl()
         if (toastList.length) removeEl()
       }, propsData.time || 2000)
     }
