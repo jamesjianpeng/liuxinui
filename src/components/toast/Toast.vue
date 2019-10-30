@@ -3,6 +3,7 @@
     <div
       v-show="show"
       class="james-toast_wrap"
+      :class="{ 'james-toast_wrap-mobile': isMobile }"
       :style="{
         top: 10 + 36 * num + 10 * num + 'px',
         'background-color': getBgColor,
@@ -26,6 +27,7 @@ import {
 } from '../../ui/base.js'
 
 import baseConfig from '../../ui/base.js'
+import { isMobile } from '../../help.js'
 
 export default {
   name: 'Toast',
@@ -70,6 +72,7 @@ export default {
     return {
       show: false,
       baseConfig,
+      isMobile
     }
   },
   computed: {
@@ -99,8 +102,10 @@ export default {
   position: fixed;
   top: 10px;
   left: 50%;
-  min-height: .72em;
-  line-height: .2em;
+  // width: auto;
+  // height: auto;
+  height: .72em;
+  line-height: .25em;
   transform: translateX(-50%);
   border-radius: .08em;
   box-shadow: 0 2px 10px 0 #eee;
@@ -109,6 +114,9 @@ export default {
   transition: .2s ease-in;
   padding: 0 .2em;
   color: #f0f0f0;
+}
+.james-toast_wrap-mobile {
+  width: 90%;
 }
 .james-toast_wrap-text {
     font-size: .24em;
