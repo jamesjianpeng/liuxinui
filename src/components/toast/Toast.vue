@@ -99,7 +99,7 @@ export default {
   position: fixed;
   top: 10px;
   left: 50%;
-  height: .72em;
+  min-height: .72em;
   line-height: .2em;
   transform: translateX(-50%);
   border-radius: .08em;
