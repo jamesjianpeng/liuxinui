@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Toast from '../../components/toast'
+import { toast } from '@/index.js'
 
 export default {
   name: 'App',
@@ -60,14 +60,11 @@ export default {
       num: 0
     }
   },
-  components: {
-    Toast
-  },
   mounted() {
   },
   methods: {
     add(state, text, borderRadius) {
-      Toast.show({
+      toast.show({
         borderRadius,
         state,
         time: 2500,

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Toast from '../components/toast'
+import Toast from '@/components/toast'
 
 export default {
   name: 'App',
