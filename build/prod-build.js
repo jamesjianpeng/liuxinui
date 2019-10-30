@@ -16,6 +16,10 @@ if (argv.includes('vue')) {
     prodConf = merge(vueConf, prodConf)
 }
 /**  #endregion */
+delete prodConf.target
+delete prodConf.output.library
+delete prodConf.output.libraryTarget
+
 rm(path.resolve(__dirname, '../dist'),(err) => {
   if (err) return;
   webpack(prodConf, function(err, stats) {
