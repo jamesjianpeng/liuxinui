@@ -27,7 +27,7 @@ rm(path.resolve(__dirname, '../dist'),(err) => {
       if (stats.hasErrors()) {
           console.log(stats, 'has errors end');
       } else {
-          console.log('webpack TypeScript and Threejs project finish!')
+          console.log('liuxinui project finish!')
       }
   })
 })
