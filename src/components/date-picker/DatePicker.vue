@@ -27,9 +27,10 @@
             <span
               class="liuxinui-_date-span"
               :class="{
-                'genral-text': dateItem ? dateItem.today : ''
+                'genral-text': dateItem ? dateItem.today : '',
+                'liuxinui-_date-span-hover': dateItem
               }"
-
+              @click="select(dateItem)"
               >
               {{ dateItem ? `${dateItem.date}` : '' }}
             </span>
@@ -67,6 +68,11 @@ export default {
   created() {
     this.list = getDatePickDateInstance(this.currentTime)
     console.log(this.list)
+  },
+  methods: {
+    select(item) {
+      this.$emit('select', item)
+    }
   }
 }
 </script>
@@ -98,6 +104,10 @@ export default {
     text-align: center;
     height: 36px;
     line-height: 36px;
+  }
+  .liuxinui-_date-span-hover:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 2px#5654a2 inset;
   }
   .liuxinui-_date-span_crrent {
 

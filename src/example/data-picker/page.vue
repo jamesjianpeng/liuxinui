@@ -2,13 +2,15 @@
   <div>
     <h3>Data-picker</h3>
     <div>
-      <DatePicker />
+      <DatePicker
+        @select="select"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { DatePicker } from '@/index.js'
+import { DatePicker, toast } from '@/index.js'
 
 export default {
   name: 'App',
@@ -23,6 +25,16 @@ export default {
   mounted() {
   },
   methods: {
+      select(item) {
+        console.log(item)
+        if (!item) return
+        toast.show({
+          borderRadius: '',
+          state: 'warning',
+          time: 2500,
+          text: '今天是' + item._date + ' ' + item.day + ' , 小宝贝每天都爱你！'
+        })
+      }
   }
 }
 </script>
