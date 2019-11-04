@@ -1,7 +1,7 @@
-import Toast from './components/toast/Toast.vue';
 import toast from './components/toast/index.js';
+import DatePicker from './components/date-picker/DatePicker.vue'
 
 export {
-  Toast,
-  toast
+  toast,
+  DatePicker
 }

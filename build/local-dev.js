@@ -13,12 +13,7 @@ const argv = Array.from(process.argv)
 
 /**  #region only compiler Vue */
 if (argv.includes('vue')) {
-    devConf.devServer.historyApiFallback = {
-        rewrites: [
-            { from: /^\//, to: '/index.html' },
-            { from: /^\/toast/, to: '/toast.html' }
-        ]
-    };
+    devConf.devServer.historyApiFallback = {};
     devConf = merge(vueConf, devConf)
 }
 /**  #endregion */

@@ -5,18 +5,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader')
+const { webpackEntry, webpackHtmlTemplate } = require('../build/router')
 
 module.exports = {
     mode: 'none',
-    entry: {
-        'index': path.resolve(__dirname, '../src/example/app/index.js'),
-        'toast': path.resolve(__dirname, '../src/example/toast/index.js')
-    },
+    entry: webpackEntry(),
     output: {
         path: path.resolve(__dirname, '../dist'),
         publicPath: './',
         filename: (chunkData) => {
-          console.log()
           const chunkName = chunkData.chunk.name
           return `${chunkName}/[name].js`;
         }
@@ -57,19 +54,6 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            meta: {
-                viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
-            },
-            chunks: ['index']
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'toast.html',
-            meta: {
-                viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
-            },
-            chunks: ['toast']
-        })
+        ...webpackHtmlTemplate(HtmlWebpackPlugin)
     ]
 };

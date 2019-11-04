@@ -1,9 +1,12 @@
 <template>
-  <transition name="james-toast_wrap-animation">
+  <!-- <transition name="james-toast_wrap-animation"> -->
     <div
       v-show="show"
       class="james-toast_wrap"
-      :class="{ 'james-toast_wrap-mobile': isMobile }"
+      :class="{
+        'james-toast_wrap-mobile': isMobile,
+        'v2-james-toast_wrap_top-center_animation': show,
+      }"
       :style="{
         top: 10 + 36 * num + 10 * num + 'px',
         'background-color': getBgColor,
@@ -11,7 +14,7 @@
       }">
       <span class="james-toast_wrap-text">{{ text }}</span>
     </div>
-  </transition>
+  <!-- </transition> -->
 </template>
 
 <script>
@@ -121,11 +124,36 @@ export default {
 .james-toast_wrap-text {
     font-size: .24em;
 }
+
 .james-toast_wrap-animation-enter-active, .james-toast_wrap-animation-leave-active {
   transition: opacity .2s;
+  transform: translateX(-50%) scale(0);
 }
 .james-toast_wrap-animation-enter, .james-toast_wrap-animation-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+  transform: translateX(-50%) scale(1);
+}
+
+.v2-james-toast_wrap_top-center_animation {
+    // -webkit-animation: top-center_animation .2s linear;
+    // -moz-animation: top-center_animation .2s linear;
+    // -o-animation: top-center_animation .2s linear;
+    //     animation: top-center_animation .2s linear;
+      animation-duration: .2s;
+      animation-name: top-center_animation;
+      animation-fill-mode:forwards;
+      -webkit-animation-fill-mode:forwards; /* Safari 和 Chrome */
+}
+
+@keyframes top-center_animation {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) scale(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
 }
 </style>
 
