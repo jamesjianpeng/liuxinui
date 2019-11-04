@@ -39,6 +39,7 @@ const webpackHtmlTemplate = (HtmlWebpackPlugin) => {
   return routerList.map((item) => {
     return new HtmlWebpackPlugin({
         filename: `${ item.routerName }.html`,
+        title: 'liuxinui-play',
         meta: {
             viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
         },
