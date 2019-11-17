@@ -6,16 +6,28 @@ const path = require('path')
 
 const routerList = [
     {
-      routerName: 'index',
+      chunkAndRouteName: 'index',
       dirRootName: 'example/app/index.js'
     },
     {
-      routerName: 'toast',
+      chunkAndRouteName: 'toast',
       dirRootName: 'example/toast/index.js'
     },
     {
-      routerName: 'data-picker',
-      dirRootName: 'example/data-picker/index.js'
+      chunkAndRouteName: 'date-picker',
+      dirRootName: 'example/date-picker/index.js'
+    },
+    {
+      chunkAndRouteName: 'directive',
+      dirRootName: 'example/directive/index.js'
+    },
+    {
+      chunkAndRouteName: 'typescript-play',
+      dirRootName: 'example/typescript-play/index.ts'
+    },
+    {
+      chunkAndRouteName: 'javascript-play',
+      dirRootName: 'example/javascript-play/index.js'
     }
 ]
 
@@ -26,7 +38,7 @@ const routerList = [
  const webpackEntry = () => {
     const result = {}
     routerList.map((item) => {
-      result[ item.routerName ] = path.resolve(__dirname, `../src/${ item.dirRootName }`)
+      result[ item.chunkAndRouteName ] = path.resolve(__dirname, `../src/${ item.dirRootName }`)
     })
     return result
  }
@@ -38,12 +50,12 @@ const routerList = [
 const webpackHtmlTemplate = (HtmlWebpackPlugin) => {
   return routerList.map((item) => {
     return new HtmlWebpackPlugin({
-        filename: `${ item.routerName }.html`,
+        filename: `${ item.chunkAndRouteName }.html`,
         title: 'liuxinui-play',
         meta: {
             viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
         },
-        chunks: [ item.routerName ]
+        chunks: [ item.chunkAndRouteName ]
     })
   })
 }

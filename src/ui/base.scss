@@ -1,19 +1,30 @@
-.genral-text {
+.liuxinui_genral-text {
   background-color: #5654a2;
   color: #fff;
 }
 
-.success-text {
+.liuxinui_success-text {
   background-color: #007b43;
   color: #fff;
 }
 
-.fail-text {
+.liuxinui_fail-text {
   background-color: #df7163;
   color: #fff;
 }
 
-.warning-text {
+.liuxinui_warning-text {
   background-color: #f8b500;
   color: #fff;
+}
+
+.liuxinui_text-arrangement-center {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+ul, li {
+  padding: 0;
+  margin: 0;
 }

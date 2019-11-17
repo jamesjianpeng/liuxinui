@@ -43,6 +43,12 @@ module.exports = {
                 use: 'babel-loader'
             },
             {
+              test: /\.ts?$/,
+              use: 'ts-loader',
+              include: path.resolve(__dirname, '../src/example/typescript-play/'),
+              exclude: /node_modules/,
+            },
+            {
                 test: /\.scss/,
                 use: [
                     'vue-style-loader',

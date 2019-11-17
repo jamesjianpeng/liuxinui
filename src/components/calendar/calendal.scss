@@ -1,0 +1,41 @@
+@import '../../ui/base.scss';
+.liuxinui-_date-picker-ul {
+  padding: 0;
+  margin: 0;
+}
+.liuxinui-_day-li {
+  list-style: none;
+  .liuxinui-_day-span {
+    display: inline-block;
+    min-width: calc(100% / 7);
+    text-align: center;
+  }
+}
+.liuxinui-_date-li {
+  list-style: none;
+  position: relative;
+  .liuxinui-_date-div {
+    border-bottom: 2px solid #eee;
+    height: 36px;
+  }
+  .liuxinui-_date-span {
+    display: inline-block;
+    min-width: calc(100% / 7);
+    text-align: center;
+    height: 36px;
+    line-height: 36px;
+  }
+  .liuxinui-_date-span-hover:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 2px#5654a2 inset;
+  }
+  .liuxinui-_date-span_crrent {
+
+  }
+}
+.liuxinui-_date-month {
+  // position: absolute;
+  // top: 0;
+  // left: 10px;
+  text-align: center;
+}

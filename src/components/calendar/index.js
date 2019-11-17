@@ -42,26 +42,29 @@ function getMonthDate(month) {
   }
 }
 
+/** @description 构造每个月的原始数据 */
+function getPerMonthData(date, _date) {
+  let today = `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`
+  const _day = new Date(_date).getDay()
+  return {
+    date, // 具体的日期
+    day: DAY[_day], // 具体的星期几
+    _day, // 星期几的原始数据
+    _date, // 年月日原始数据
+    today: _date === today
+  }
+}
+
 /** @description 获得每个月的天数，以及具体的日期，星期 */
 function getDatePickData(date) {
   let monthDateList = []
   let today = `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${new Date().getDate()}`
-  console.log(today)
   const year = new Date(date).getFullYear()
   MONTH.map((month/* 月份 */, index) => {
     /** @description 获得月份天数 */
     const dates = getMonthDate(month)
     const dateDetail = new Array(dates).fill(null).map((item, index) => {
-      const date = index + 1
-      const _date = `${year}/${month}/${date}`
-      const _day = new Date(_date).getDay()
-      return {
-        date, // 具体的日期
-        day: DAY[_day], // 具体的星期几
-        _day, // 星期几的原始数据
-        _date, // 年月日原始数据
-        today: _date === today
-      }
+      return getPerMonthData(index + 1, `${year}/${month}/${index + 1}`)
     })
 
     monthDateList.push({
@@ -78,6 +81,7 @@ function getDatePickData(date) {
 /** @description 构造日历的数据结构 */
 function getDatePickDateInstance(currentTime) {
   const initList = getDatePickData(currentTime)
+  console.log(initList)
   const outData = {}
   initList.map((item, index) => {
     let count = 0;
@@ -91,6 +95,15 @@ function getDatePickDateInstance(currentTime) {
         count++
       }
     })
+
+    const innerList = Object.keys(innerDate)
+    const diff = 6 - innerList.length
+    // 为了对齐需要填充剩下没有数据的行
+    if (diff) {
+      for (let i = innerList.length + 1; i <= 6; i++) {
+        innerDate[i] = new Array(7).fill(null)
+      }
+    }
     outData[index] = innerDate
   })
 

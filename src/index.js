@@ -1,7 +1,13 @@
 import toast from './components/toast/index.js';
-import DatePicker from './components/date-picker/DatePicker.vue'
+import Calendar from './components/calendar/Calendar.vue'
+
+import clickoutside from './directive/clickoutside'
+const directive = {
+  clickoutside
+}
 
 export {
   toast,
-  DatePicker
+  Calendar,
+  directive
 }

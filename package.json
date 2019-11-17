@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:prod": "node ./build/prod-build.js vue",
-    "build:local": "node ./build/local-dev.js vue"
+    "build:local": "node ./build/local-dev.js vue",
+    "serve": "node ./src/serve/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,12 +21,15 @@
   "homepage": "https://github.com/jamesjianpeng/xinUI.github.io#readme",
   "devDependencies": {
     "@babel/core": "^7.6.4",
+    "@types/node": "^12.12.7",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.13.0",
     "rimraf": "^3.0.0",
     "sass-loader": "^8.0.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
     "vue-loader": "^15.7.1",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.10",

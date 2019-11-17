@@ -1,26 +1,39 @@
 <template>
   <div>
-    <a href="./toast.html"> toast 组件</a>
-    <a href="./date-picker.html"> date-picker 组件</a>
+    clickoutside
+    <div v-clickoutside="handleEvent">
+      clickoutside
+    </div>
+    <div v-loading="loading">
+      loading
+    </div>
   </div>
 </template>
 
 <script>
 import Toast from '@/components/toast'
+import { setTimeout } from 'timers';
 
 export default {
   name: 'App',
   data() {
     return {
-      num: 0
+      num: 0,
+      loading: true
     }
   },
   components: {
     Toast
   },
   mounted() {
+    const tiemid = setTimeout(() => {
+      this.loading = !this.loading
+    }, 5000)
   },
   methods: {
+    handleEvent() {
+      console.log('good')
+    },
     add() {
       Toast.show({
         time: 1500,
