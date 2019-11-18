@@ -39,6 +39,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "es6-promise": "^4.2.8",
     "vue": "^2.6.10"
   }
 }

@@ -15,6 +15,7 @@ module.exports = {
         publicPath: './',
         filename: (chunkData) => {
           const chunkName = chunkData.chunk.name
+          console.log(chunkName + '<---------')
           return `${chunkName}/[name].js`;
         }
     },
@@ -27,6 +28,13 @@ module.exports = {
            'vue$': 'vue/dist/vue.esm.js',
            '@': path.resolve(__dirname, '../src'),
         }
+    },
+    optimization: {
+      // splitChunks: {
+      //   chunks: (chunk) => {
+      //     return true;
+      //   },
+      // }
     },
     externals: {
         // vue: 'Vue', // 需要知道库中暴露出来的 name，key 是我们在项目 import Vue from 'vue', value 就是 资源中暴露出来的名字

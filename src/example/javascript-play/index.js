@@ -5,4 +5,7 @@
 
 // import './ES/oop/tsc-extend'
 // import './ES/oop/extend'
-import './ES/oop/test-extend'
+// import './ES/oop/test-extend'
+
+import './ES/promise/promise'
+console.log('---')

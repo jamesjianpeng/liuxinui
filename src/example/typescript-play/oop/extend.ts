@@ -14,7 +14,7 @@ class Animal {
     return this.type;
   }
 
-  public setType(type: string) {
+  public setType = (type: string) => {
     this.type = type
   }
 
@@ -34,9 +34,10 @@ class Cat extends Animal {
     this.Unit = 'kg'
   }
 
-  protected _getWeight(): String {
+  protected _getWeight = (): String => {
     return this.weight.toString() + this.Unit
   }
 }
 
 console.log(new Cat(100))
+
