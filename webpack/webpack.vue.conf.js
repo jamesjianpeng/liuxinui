@@ -57,13 +57,13 @@ module.exports = {
               exclude: /node_modules/,
             },
             {
-                test: /\.scss/,
+                test: /\.(scss|css)/,
                 use: [
                     'vue-style-loader',
                     'css-loader',
                     'sass-loader'
                 ]
-            }
+            },
         ]
     },
     plugins: [

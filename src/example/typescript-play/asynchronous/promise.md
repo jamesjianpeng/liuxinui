@@ -87,12 +87,20 @@ import {
   initializePromise
 } from './-internal'; // internal 内部私有的方法
 
+/**
+ * @description 在初始化 Promise 的时候，必须是要传一个函数
+ */
 function needsResolver() {
   throw new TypeError('You must pass a resolver function as the first argument to the promise constructor');
+  // 在 promise 构成函数中必须使用一个解析函数（一般的函数）作为第一个参数
 }
 
+/**
+ * @description 不是使用 new 关键字调用的时候会抛出该信息
+ */
 function needsNew() {
   throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
+  // 构造 Promise 失败，请使用 new 操作符，Promise 构造函数不能作为一个函数调用
 }
 
 class Promise {
@@ -113,6 +121,159 @@ class Promise {
 ```
 
 ##### /es6-promise/-internal.js
-在 constructor 中在使用了这些方法，先来初略一下
+在 constructor 中在使用了这些方法，先来初略一下 noop, nextId, initializePromise
 ```js
+import {
+  asap
+} from './asap'; // 目前在
+
+/**
+ * @description 传入的 resolver function 进行对比，对比一定不相同 🤔️
+ */
+function noop() {}
+
+/**
+ * @description 生成唯一的一个 promise id
+ */
+let id = 0;
+function nextId() {
+  return id++;
+}
+
+/**
+ * @function 封装一层promise和resolver的处理过程
+ * @param {Promise} promise
+ * @param {Function} resolver
+ * 从这段代码就对应了  new Promise((resolve, reject) =>  {}) 解析函数的的两参数 resolve, reject，它们是 function
+ */
+function initializePromise(promise, resolver) {
+  try {
+    resolver(function resolvePromise(value){ // resolvePromise对外暴露的参数只有一个 value， 但是实际上内部调用的是resolve，它有两个参数, 原理利用闭包把第一个promise参数封装起来，使用者只关心 value（reason）
+      resolve(promise, value);
+    }, function rejectPromise(reason) {
+      reject(promise, reason);
+    });
+  } catch(e) {
+    reject(promise, e);
+  }
+}
+
+/**
+ * @function 根据initializePromise这个方法继续找到resolve这个方法，
+ * @param {Promise} promise
+ * @param {value} any
+ * 我们先看看 1. fulfill 成功的时候这个方法做的事情
+ */
+function resolve(promise, value) {
+  if (promise === value) {
+    reject(promise, selfFulfillment());
+  } else if (objectOrFunction(value)) {
+    let then;
+    try {
+      then = value.then;
+    } catch (error) {
+      reject(promise, error);
+      return;
+    }
+    handleMaybeThenable(promise, value, then);
+  } else {
+    fulfill(promise, value); // 1
+  }
+}
+
+const PENDING   = void 0; // 挂起状态
+const FULFILLED = 1; // 完成状态
+const REJECTED  = 2; // 拒绝状态
+
+/**
+ * @function fulfill
+ * @param {Promise} promise
+ * @param {value} any
+ */
+function fulfill(promise, value) {
+  if (promise._state !== PENDING) { return; } // 当 promise 的状态已经到了 FULFILLED 或 REJECTED 说明 Promise d的生命周期已经完成
+
+  // promise._state 是 PENDING 的时候，则给出完成的结果和修改最终状态
+  promise._result = value;
+  promise._state = FULFILLED;
+
+  if (promise._subscribers.length !== 0) {
+    asap(publish, promise); // 🤔️ asap 尽快的意思
+  }
+}
+
+/**
+ * @function publish发布，具体是发布啥，发布的时间是什么时候，1.在fulfill（履行）的时候，会吧publish函数提前传入，何时调用要看asap的具体操作，可以提前分析一下具体的容
+ * @param {Promise} promise
+ */
+function publish(promise) {
+  let subscribers = promise._subscribers; // 这个在 Promise constructor 里_subscribers初始化是 []
+  let settled = promise._state;// 这个在 Promise constructor 里_subscribers初始化是 undefined
+
+  if (subscribers.length === 0) { return; }
+
+  let child, callback, detail = promise._result;
+
+  for (let i = 0; i < subscribers.length; i += 3) { // 3 是这样来的，在 /es6-promise/-internal.js 中状态有三种 PENDING = void 0, FULFILL = 1, REJECT = 2, 每种状态对应有一个callback,从 invokeCallback 中可以知道
+    child = subscribers[i]; // 🤔️
+    callback = subscribers[i + settled]; // 每种状态对于一个 callback
+
+    if (child) {
+      invokeCallback(settled, child, callback, detail);// 比较复杂，后面再分析
+    } else {
+      callback(detail);
+    }
+  }
+
+  promise._subscribers.length = 0;
+}
+
 ```
+##### /es6-promise/asap.js 感觉越来越接近 promise 的本质
+```js
+let len = 0;
+let vertxNext;
+let customSchedulerFn;
+/**
+ * @function asap 是用来把每个Promise的三种状态都在队列上分为一组如
+ * 第一组：0，1，2
+ * 第二组：3，4，5
+ * 第三组：6，7，8
+ * 每组的起点的： 3 * n (n >= 0) 第一组从0开始
+ *
+ * 每一组中第一个元素是存放 publish 函数
+ * 第二个函数传 promise 这个对象
+ *
+ */
+export var asap = function asap(callback, arg) { // 🤔️ 为啥要这样写
+  queue[len] = callback;
+  queue[len + 1] = arg;
+  len += 2;
+  if (len === 2) {
+    // If len is 2, that means that we need to schedule an async flush.
+    // If additional callbacks are queued before the queue is flushed, they
+    // will be processed by this flush that we are scheduling.
+    if (customSchedulerFn) { //
+      customSchedulerFn(flush);
+    } else {
+      scheduleFlush();
+    }
+  }
+}
+
+
+let scheduleFlush;
+// Decide what async method to use to triggering processing of queued callbacks:
+if (isNode) {
+  scheduleFlush = useNextTick();
+} else if (BrowserMutationObserver) {
+  scheduleFlush = useMutationObserver();
+} else if (isWorker) {
+  scheduleFlush = useMessageChannel();
+} else if (browserWindow === undefined && typeof require === 'function') {
+  scheduleFlush = attemptVertx();
+} else {
+  scheduleFlush = useSetTimeout();
+}
+```
+

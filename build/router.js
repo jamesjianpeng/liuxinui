@@ -10,6 +10,10 @@ const routerList = [
       dirRootName: 'example/app/index.js'
     },
     {
+      chunkAndRouteName: 'file-upload',
+      dirRootName: 'example/file-upload/index.js'
+    },
+    {
       chunkAndRouteName: 'toast',
       dirRootName: 'example/toast/index.js'
     },

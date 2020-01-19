@@ -1,6 +1,8 @@
 <template>
   <div>
     <h3>Data-picker</h3>
+    <input style="display: block;width: 100vw;" v-model="navigator" />
+    {{ isWeiXin }}
     <ul>
       <li>
         <button @click="changeTab(1, 'fullScreen')">日历组件 12月都展示</button>
@@ -24,20 +26,32 @@
 
 <script>
 import { Calendar, toast } from '@/index.js'
-
+function isWeiXin() {
+    var ua = window.navigator.userAgent.toLowerCase();
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+        return '1';
+    } else {
+        return '0';
+    }
+}
 export default {
   name: 'App',
   data() {
     return {
       num: 0,
       type: 1,
-      secondeType: 'fullScreen'
+      secondeType: 'fullScreen',
+      navigator: window.navigator.userAgent.toLowerCase(),
+      isWeiXin: ''
     }
   },
   components: {
     Calendar
   },
   mounted() {
+    const state = isWeiXin()
+    console.log(state)
+    this.isWeiXin = state
   },
   methods: {
       changeTab(type, secondeType) {
